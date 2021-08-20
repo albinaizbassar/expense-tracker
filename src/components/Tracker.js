@@ -35,7 +35,7 @@ const styles = {
 }
 
 const ExpenseComponent = ({expense, options}) => {
-  const showDate = expense.createdAt ? new Date(expense.createdAt.seconds * 1000).toLocaleDateString('ru-RU', options) : 'no date';
+  const showDate = expense.createdAt ? new Date(expense.createdAt.seconds * 1000).toLocaleDateString('ru-RU', options) : 'только что';
   return (
     <div style={styles.valueRow}>
       <div>{showDate}</div>
@@ -45,13 +45,13 @@ const ExpenseComponent = ({expense, options}) => {
   )
 }
 
-function Tracker(props) {
+function Tracker() {
   const [showModal, setModal] = useState(false)
   const [expenses, setExpenses] = useState([])
   let temp_total = 0
   const [total, setTotal] = useState(0)
   const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
-  useEffect(() => {
+  const update = () => {
     getAllExpenses().then(async (data) => {
       await setExpenses(data)
       await data.map((expense) => {
@@ -62,12 +62,15 @@ function Tracker(props) {
         }
       })
       await setTotal(temp_total)
-      console.log(data)
+    console.log(data)
     })
+  }
+  useEffect(() => {
+    update()
   }, [])
   if (showModal) {
     return (
-      <Modal setModal={setModal}/>
+      <Modal setModal={setModal} update={update}/>
     )
   }
 
