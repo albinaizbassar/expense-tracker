@@ -16,6 +16,7 @@ export const createExpense = (order) => {
 
 export const getAllExpenses = () => {
   return db.collection('expenses')
+    .orderBy('createdAt', 'desc')
     .get()
     .then((snapshot) => snapshot.docs
       .map((doc) => doc.data()));

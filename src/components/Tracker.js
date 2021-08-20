@@ -52,17 +52,16 @@ function Tracker() {
   const [total, setTotal] = useState(0)
   const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
   const update = () => {
-    getAllExpenses().then(async (data) => {
-      await setExpenses(data)
-      await data.map((expense) => {
+    getAllExpenses().then((data) => {
+      setExpenses(data)
+      data.map((expense) => {
         if (expense.choice === "+") {
           temp_total += parseInt(expense.amount)
         } else if (expense.choice === '-'){
           temp_total -= parseInt(expense.amount)
         }
       })
-      await setTotal(temp_total)
-    console.log(data)
+      setTotal(temp_total)
     })
   }
   useEffect(() => {
