@@ -26,7 +26,7 @@ export const getAllExpenses = (uid) => {
 
 export const createUser = (order, uid) => {
   return  db.collection("users").doc(uid).set({
-    order,
+    ...order,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   })
 }

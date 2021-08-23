@@ -4,10 +4,7 @@ import {auth} from "../config/firebase";
 import firebase from "firebase";
 import google from './../images/google.svg'
 
-function Login(props) {
-  const {
-
-  } = props
+function Login() {
 
   const signIn = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -17,6 +14,7 @@ function Login(props) {
       displayName: auth.currentUser.displayName,
     }
     await createUser(order, auth.currentUser.uid)
+    console.log(auth.currentUser)
   }
 
   return (

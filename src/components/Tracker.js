@@ -67,16 +67,11 @@ function Tracker() {
   useEffect(() => {
     update()
   }, [])
-  if (showModal) {
-    return (
-      <Modal setModal={setModal} update={update}/>
-    )
-  }
 
   return <div style={styles.window}>
     <div style={styles.navbar}>
       <span onClick={() => auth.signOut()}>Остаток: {total}</span>
-      <button onClick={() => setModal(true)} style={{
+      <button onClick={() => setModal(!showModal)} style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -88,9 +83,13 @@ function Tracker() {
       }}>
         <img src={add} width="25px" style={{
           color: '#fff',
-
         }} alt=""/>
       </button>
+      {
+        showModal ? (
+          <Modal setModal={setModal} update={update}/>
+        ) : ''
+      }
     </div>
     <div style={styles.table}>
       <div style={styles.tableHeader}>
