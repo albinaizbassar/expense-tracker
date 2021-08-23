@@ -26,6 +26,7 @@ function Modal({setModal, update}) {
       borderRadius: '5px 0 5px 5px',
       color: '#fff',
       padding: 20,
+      width: 146
     }}>
       <div style={{
         backgroundColor: 'white',
@@ -76,7 +77,8 @@ function Modal({setModal, update}) {
               outline: 'none',
               border: "none",
               padding: 5,
-              borderRadius: 2
+              borderRadius: 2,
+              width: 136
             }} onChange={(e) => setName(e.target.value)}/>
             <br />
           </>
@@ -90,7 +92,8 @@ function Modal({setModal, update}) {
         outline: 'none',
         border: "none",
         padding: 5,
-        borderRadius: 2
+        borderRadius: 2,
+        width: 136
       }} onChange={(e) => {
         setAmount(e.target.value)
         if (choice === '-'){
