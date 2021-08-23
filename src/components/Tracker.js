@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Modal from "./Modal";
-import {getAllExpenses} from "../config/firebase";
-
+import {auth, getAllExpenses} from "../config/firebase";
+import add from './../images/add.svg'
 const styles = {
   window: {
     margin: '0 auto',
@@ -52,7 +52,7 @@ function Tracker() {
   const [total, setTotal] = useState(0)
   const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
   const update = () => {
-    getAllExpenses().then((data) => {
+    getAllExpenses(auth.currentUser.uid).then((data) => {
       setExpenses(data)
       data.map((expense) => {
         if (expense.choice === "+") {
@@ -75,8 +75,22 @@ function Tracker() {
 
   return <div style={styles.window}>
     <div style={styles.navbar}>
-      <span>Остаток: {total}</span>
-      <button onClick={() => setModal(true)}>+</button>
+      <span onClick={() => auth.signOut()}>Остаток: {total}</span>
+      <button onClick={() => setModal(true)} style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        border: 'none',
+        backgroundColor: '#fff',
+        padding: 0,
+        margin: 0,
+        cursor: 'pointer'
+      }}>
+        <img src={add} width="25px" style={{
+          color: '#fff',
+
+        }} alt=""/>
+      </button>
     </div>
     <div style={styles.table}>
       <div style={styles.tableHeader}>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {createExpense} from "../config/firebase";
+import {auth, createExpense} from "../config/firebase";
 
 function Modal({setModal, update}) {
   const [choice, setChoice] = useState();
@@ -11,7 +11,8 @@ function Modal({setModal, update}) {
     const order = {
       name,
       choice,
-      amount
+      amount,
+      uid: auth.currentUser.uid
     }
     createExpense(order)
   }
