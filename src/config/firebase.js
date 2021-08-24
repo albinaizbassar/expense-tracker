@@ -30,3 +30,10 @@ export const createUser = (order, uid) => {
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   })
 }
+
+export const editExpense = (order, id) => {
+  return db.collection('expenses')
+    .doc(id).update({
+      ...order
+    })
+}

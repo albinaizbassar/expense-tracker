@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
-import {auth, createExpense} from "../config/firebase";
+import {auth, createExpense, editExpense} from "../config/firebase";
 
-function Modal({setModal, update}) {
-  const [choice, setChoice] = useState();
-  const [name, setName] = useState('')
-  const [amount, setAmount] = useState('')
-  const [showInput, setShowInput] = useState(false)
+function Modal({setModal, update, data, action}) {
+  const [choice, setChoice] = useState(data ? data.choice : '');
+  const [name, setName] = useState(data ? data.name : '')
+  const [amount, setAmount] = useState(data ? data.amount : '')
   const [disabled, setDisabled] = useState(true)
   function addExpense() {
     const order = {
@@ -36,7 +35,6 @@ function Modal({setModal, update}) {
         <input type="radio" id="contactChoice1" name="contact" style={{
           display: 'none'
         }} onClick={() => {
-          setShowInput(true)
           if (choice === '+'){
             setName('')
             setAmount('')
@@ -54,7 +52,6 @@ function Modal({setModal, update}) {
         <input type="radio" id="contactChoice2" name="contact" style={{
           display: 'none'
         }} onClick={() => {
-          setShowInput(false)
           setName('Пополнение')
           if (choice === '-'){
             setAmount('')
@@ -70,7 +67,7 @@ function Modal({setModal, update}) {
         <br/>
       </div>
       {
-        showInput ? (
+        choice === '-' ? (
           <>
             <input placeholder="Введите название" value={name} style={{
               marginTop: 5,
@@ -113,9 +110,13 @@ function Modal({setModal, update}) {
       <br />
 
       <button onClick={() => {
-        addExpense()
+        const order = {
+          name,
+          choice,
+          amount,
+        }
+        action === 'edit' ? editExpense(order, data.id) : addExpense()
         setModal(false)
-        setShowInput(false)
         update()
       }} style={{
         border: 'none',
@@ -124,7 +125,9 @@ function Modal({setModal, update}) {
         borderRadius: 2,
         cursor: disabled ? '' : 'pointer'
       }} disabled={disabled}>
-        Добавить
+        {
+          action === 'edit' ? 'Изменить' : 'Добавить'
+        }
       </button>
     </div>
   );

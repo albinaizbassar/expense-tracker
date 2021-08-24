@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import Modal from "./Modal";
-import {auth, getAllExpenses} from "../config/firebase";
+import {auth, editExpense, getAllExpenses} from "../config/firebase";
 import add from './../images/add.svg'
+import edit from './../images/edit.svg'
 const styles = {
   window: {
     margin: '0 auto',
@@ -26,7 +27,8 @@ const styles = {
     border: '1px solid #000',
     borderTop: 'none',
     padding: '5px 10px',
-    height: 500
+    height: '80vh',
+    overflow: 'scroll'
   },
   valueRow: {
     display: 'flex',
@@ -34,13 +36,35 @@ const styles = {
   }
 }
 
-const ExpenseComponent = ({expense, options}) => {
+const ExpenseComponent = ({expense, options, setModal, setData, setAction}) => {
   const showDate = expense.createdAt ? new Date(expense.createdAt.seconds * 1000).toLocaleDateString('ru-RU', options) : 'только что';
+
   return (
     <div style={styles.valueRow}>
       <div>{showDate}</div>
       <div>{expense.name}</div>
-      <div>{expense.choice + expense.amount}</div>
+      <div>
+        {expense.choice + expense.amount}
+        <button
+          style={{
+            margin: '0 0 0 5px',
+            padding: 0,
+            border: 'none',
+            backgroundColor: '#fff',
+            cursor: 'pointer'
+          }}
+          onClick={() => {
+          setData({
+            ...expense
+          })
+          setModal(true)
+          setAction('edit')
+        }}>
+          <img src={edit} style={{
+            width: 15
+          }} alt=""/>
+        </button>
+      </div>
     </div>
   )
 }
@@ -51,6 +75,8 @@ function Tracker() {
   let temp_total = 0
   const [total, setTotal] = useState(0)
   const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+  const [data, setData] = useState()
+  const [action, setAction] = useState()
   const update = () => {
     getAllExpenses(auth.currentUser.uid).then((data) => {
       setExpenses(data)
@@ -71,7 +97,11 @@ function Tracker() {
   return <div style={styles.window}>
     <div style={styles.navbar}>
       <span onClick={() => auth.signOut()}>Остаток: {total}</span>
-      <button onClick={() => setModal(!showModal)} style={{
+      <button onClick={() => {
+        setModal(!showModal)
+        setAction('create')
+        setData()
+      }} style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -87,7 +117,7 @@ function Tracker() {
       </button>
       {
         showModal ? (
-          <Modal setModal={setModal} update={update}/>
+          <Modal setModal={setModal} update={update} data={data} action={action}/>
         ) : ''
       }
     </div>
@@ -101,7 +131,7 @@ function Tracker() {
         {
           expenses ? expenses.map((expense) => {
             return (
-              <ExpenseComponent expense={expense} options={options}/>
+              <ExpenseComponent expense={expense} options={options} setModal={setModal} setData={setData} setAction={setAction}/>
             )
           }) : ''
         }
