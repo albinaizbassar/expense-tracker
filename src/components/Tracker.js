@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Modal from "./Modal";
-import {auth, editExpense, getAllExpenses} from "../config/firebase";
+import {auth, getAllExpenses} from "../config/firebase";
 import add from './../images/add.svg'
 import edit from './../images/edit.svg'
 const styles = {
@@ -126,6 +126,7 @@ function Tracker() {
         <div>Date</div>
         <div>Name</div>
         <div>Amount</div>
+
       </div>
       <div style={styles.tableValues}>
         {

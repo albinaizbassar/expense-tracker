@@ -109,15 +109,15 @@ function Modal({setModal, update, data, action}) {
       }}/>
       <br />
 
-      <button onClick={() => {
+      <button onClick={async () => {
         const order = {
           name,
           choice,
           amount,
         }
-        action === 'edit' ? editExpense(order, data.id) : addExpense()
-        setModal(false)
-        update()
+        action === 'edit' ? await editExpense(order, data.id) : await addExpense()
+        await update()
+        await setModal(false)
       }} style={{
         border: 'none',
         outline: 'none',
